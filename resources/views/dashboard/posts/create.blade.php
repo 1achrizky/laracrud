@@ -1,9 +1,14 @@
-@extends('layouts.main')
+@extends('dashboard.layouts.main')
 
 @section('container')
-  <h2>{{ $title }}</h2>
-  <div class="col-lg-8">
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Create New Post</h1>
+</div>
+
+<div class="col-lg-8">
     <form method="post" action="/dashboard/posts">
+      {{-- kalau memakai controller resource, akan mengarah ke method store --}}
+      @csrf
       <div class="mb-3">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
         <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
@@ -33,4 +38,4 @@
     });
   </script>
   
-@endsection('container')
+@endsection

@@ -20,4 +20,8 @@ class Post extends Model
     public function author(){
       return $this->belongsTo(User::class, 'user_id'); // 1 postingan, 1 category
     }
+
+    public function getRouteKeyName(){
+      return 'slug';
+    }
 }
