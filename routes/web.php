@@ -1,6 +1,6 @@
 <?php
 // use App\Models\Post; // manual
-// use App\Models\User; // manual
+use App\Models\User; // manual
 use App\Models\Category; // manual
 
 use Illuminate\Support\Facades\Route;
@@ -37,7 +37,6 @@ Route::get('/dashboard/posts/create', function () {
 Route::get('/about', function () {
     return view('about', [
         "title" => "About",
-        "active" => "about",
         "name" => "Achmad Rizky",
         "email" => "1achrizky@gmail.com",
         "image" => "Foto - Achmad Rizky - red - 4x6.jpg",
@@ -58,7 +57,6 @@ Route::get('/dashboard/posts/create', function(){
 Route::get('/categories', function(){
   return view('categories', [
     'title' => 'Post Categories',
-    "active" => "categories",
     'categories' => Category::all(),
   ]);
 });
@@ -66,7 +64,6 @@ Route::get('/categories', function(){
 Route::get('/categories/{category:slug}', function(Category $category){
   return view('posts', [
     'title' => "Post by Category : $category->name",
-    'active' => "categories",
     'posts' => $category->posts->load('category', 'author'), //BINDING. {->posts} HARUS sama dengan method di Model Category
   ]);
 });
@@ -90,6 +87,7 @@ Route::get('/dashboard', function(){
   return view('dashboard.index');
 })->middleware('auth');
 
+Route::get('/dashboard/posts/checkSlug', [DashboardPostController::class, 'checkSlug'])->middleware('auth');
 Route::resource('/dashboard/posts', DashboardPostController::class)->middleware('auth');
 
 // Route::get('/payment-entry', function () {

@@ -7,23 +7,23 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
+            <?php $active = isset($active)? $active: ''; // netralize $active ?>
             <a class="nav-link  {{ ($active === 'home')? 'active': '' }}" href="/">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link  {{ ($active === 'about')? 'active': '' }}" href="/about">About</a>
+            <a class="nav-link  {{ Request::is('about')? 'active':'' }}" href="/about">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link  {{ ($active === 'posts')? 'active': '' }}" href="/posts">Blog</a>
+            {{-- <a class="nav-link  {{ ($active === 'posts')? 'active': '' }}" href="/posts">Blog</a> --}}
+            <a class="nav-link  {{ Request::is('posts')? 'active':'' }}" href="/posts">Blog</a>
           </li>
           
           <li class="nav-item">
-            <a class="nav-link  {{ ($active === 'categories')? 'active': '' }}" href="/categories">Categories</a>
+            {{-- <a class="nav-link  {{ ($active === 'categories')? 'active': '' }}" href="/categories">Categories</a> --}}
+            <a class="nav-link  {{ Request::is('categories')? 'active':'' }}" href="/categories">Categories</a>
           </li>
           
-          <li class="nav-item">
-            <a class="nav-link  {{ ($title === 'Entry Artikel')? 'active': '' }}" href="/dashboard/posts/create">Entry Artikel</a>
-          </li>
-
+          
           <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Payment

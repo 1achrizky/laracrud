@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Str;
 
 class DashboardPostController extends Controller
 {
@@ -12,8 +15,7 @@ class DashboardPostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
+    public function index(){
         // return Post::where('user_id',auth()->user()->id)->get(); // Post::all();
         return view('dashboard.posts.index', [
             'posts' => Post::where('user_id',auth()->user()->id)->get(),
@@ -26,7 +28,9 @@ class DashboardPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create(){
-        return view('dashboard.posts.create');
+        return view('dashboard.posts.create', [
+            'categories' => Category::all()
+        ]);
     }
 
     /**
@@ -36,7 +40,21 @@ class DashboardPostController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request){
-        //
+        // return $request;
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'slug' => 'required|unique:posts',
+            'category_id' => 'required',
+            'body' => 'required',
+        ]);
+
+        $validatedData['user_id'] = auth()->user()->id;
+        $validatedData['excerpt'] = Str::limit(strip_tags($request->body), 200); 
+        //semua strip_tags htmlnya hilang
+
+        Post::create($validatedData);
+
+        return redirect('/dashboard/posts')->with('success', 'New post has been added!');
     }
 
     /**
@@ -67,8 +85,7 @@ class DashboardPostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
-    {
+    public function update(Request $request, Post $post){
         //
     }
 
@@ -78,8 +95,13 @@ class DashboardPostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Post $post)
-    {
+    public function destroy(Post $post){
         //
+    }
+
+    public function checkSlug(Request $request){
+        $slug = SlugService::createSlug(Post::class, 'slug', $request->title);
+        return response()->json(['slug'=>$slug]);
+        // createSlug(Post::class, field bernama 'slug', titlenya adalah $request->title);
     }
 }

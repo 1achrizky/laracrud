@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, Sluggable;
 
     // protected $fillable = ['title', 'slug', 'excerpt', 'body']; // FILLABLE: mana saja yg boleh diisi. Sisanya tidak boleh
     protected $guarded = ['id']; // GUARDED: id tidak boleh diisi, lainnya boleh.
@@ -23,5 +24,13 @@ class Post extends Model
 
     public function getRouteKeyName(){
       return 'slug';
+    }
+
+    public function sluggable(): array{
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
     }
 }
