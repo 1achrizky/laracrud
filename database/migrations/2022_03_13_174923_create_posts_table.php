@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id');
             $table->string('title');
             $table->string('slug')->unique(); // tidak boleh sama dg lain
+            $table->string('image')->nullable(); // tidak boleh sama dg lain
             $table->text('excerpt'); // text read more
             $table->text('body');
             $table->timestamp('published_at')->nullable();
